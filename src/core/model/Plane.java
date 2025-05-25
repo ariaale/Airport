@@ -1,16 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package airport;
+package core.model;
 
+import core.design.prototype.Prototype;
 import java.util.ArrayList;
 
-/**
- *
- * @author edangulo
- */
-public class Plane {
+public class Plane implements Prototype<Plane>{
     
     private final String id;
     private String brand;
@@ -56,8 +49,23 @@ public class Plane {
         return flights;
     }
     
+    public void setFlights(ArrayList<Flight> flights) {
+        this.flights = flights;
+    }
+    
     public int getNumFlights() {
         return flights.size();
     }
+
     
+    
+    @Override
+    public Plane clone(){
+        
+        Plane copy = new Plane(this.id,this.brand,this.model,this.maxCapacity,this.airline);
+        copy.setFlights(this.flights);
+        
+        return copy;
+
+    }
 }

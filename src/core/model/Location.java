@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package airport;
+package core.model;
 
-/**
- *
- * @author edangulo
- */
-public class Location {
+import core.design.prototype.Prototype;
+
+public class Location implements Prototype<Location> {
     
     private final String airportId;
     private String airportName;
@@ -48,6 +42,13 @@ public class Location {
 
     public double getAirportLongitude() {
         return airportLongitude;
+    }
+    
+
+    @Override
+    public Location clone(){
+        Location copy = new Location(this.airportId,this.airportName,this.airportCity,this.airportCountry,this.airportLatitude,this.airportLongitude);
+        return copy;
     }
     
 }

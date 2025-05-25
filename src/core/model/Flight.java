@@ -1,18 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package airport;
+package core.model;
 
+import core.design.prototype.Prototype;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-/**
- *
- * @author edangulo
- */
-public class Flight {
-    
+public class Flight implements Prototype<Flight> {
+
     private final String id;
     private ArrayList<Passenger> passengers;
     private Plane plane;
@@ -24,7 +17,6 @@ public class Flight {
     private int minutesDurationArrival;
     private int hoursDurationScale;
     private int minutesDurationScale;
-    
 
     public Flight(String id, Plane plane, Location departureLocation, Location arrivalLocation, LocalDateTime departureDate, int hoursDurationArrival, int minutesDurationArrival) {
         this.id = id;
@@ -35,7 +27,7 @@ public class Flight {
         this.departureDate = departureDate;
         this.hoursDurationArrival = hoursDurationArrival;
         this.minutesDurationArrival = minutesDurationArrival;
-        
+
         this.plane.addFlight(this);
     }
 
@@ -51,14 +43,14 @@ public class Flight {
         this.minutesDurationArrival = minutesDurationArrival;
         this.hoursDurationScale = hoursDurationScale;
         this.minutesDurationScale = minutesDurationScale;
-        
+
         this.plane.addFlight(this);
     }
-    
+
     public void addPassenger(Passenger passenger) {
         this.passengers.add(passenger);
     }
-    
+
     public String getId() {
         return id;
     }
@@ -98,21 +90,34 @@ public class Flight {
     public Plane getPlane() {
         return plane;
     }
-
+    
+    public ArrayList<Passenger> getPassengers() {
+        return passengers;
+    }
+    
     public void setDepartureDate(LocalDateTime departureDate) {
         this.departureDate = departureDate;
     }
-    
-    public LocalDateTime calculateArrivalDate() {
-        return departureDate.plusHours(hoursDurationScale).plusHours(hoursDurationArrival).plusMinutes(minutesDurationScale).plusMinutes(minutesDurationArrival);
-    }
-    
-    public void delay(int hours, int minutes) {
-        this.departureDate = this.departureDate.plusHours(hours).plusMinutes(minutes);
-    }
-    
+
+
     public int getNumPassengers() {
         return passengers.size();
     }
-    
+
+    public void setPassengers(ArrayList<Passenger> passengers) {
+        this.passengers = passengers;
+    }
+
+    @Override
+    public Flight clone(){
+        Flight copy;
+        if (this.getScaleLocation() != null){
+            copy = new Flight(this.id,this.plane.clone(),this.departureLocation.clone(),this.scaleLocation.clone(),this.arrivalLocation.clone(),this.departureDate,this.hoursDurationArrival,this.minutesDurationArrival,this.hoursDurationScale,this.minutesDurationScale);
+        }else{
+            copy = new Flight(this.id,this.plane.clone(),this.departureLocation.clone(),this.arrivalLocation.clone(),this.departureDate,this.hoursDurationArrival,this.minutesDurationArrival);
+        }
+        copy.setPassengers(this.passengers);
+        return copy;
+    }
+
 }
